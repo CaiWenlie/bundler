@@ -9,6 +9,8 @@
   "author": "Unreal <ekpg@msn.com>",
   "license": "ISC",
   "dependencies": {
-    "glob": "^7.1.6"
+    "compressing": "^1.5.1",
+    "glob": "^7.1.6",
+    "zip-stream": "^4.0.4"
   }
 }
