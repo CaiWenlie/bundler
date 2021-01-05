@@ -1,16 +1,21 @@
 {
-  "name": "bundler",
+  "name": "txtbundler",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "txtbundler": "./bin/index.js"
+  },
   "author": "Unreal <ekpg@msn.com>",
   "license": "ISC",
   "dependencies": {
+    "commander": "^6.2.1",
     "compressing": "^1.5.1",
     "glob": "^7.1.6",
-    "zip-stream": "^4.0.4"
+    "ignore": "^5.1.8",
+    "pump": "^3.0.0"
   }
 }

@@ -1,14 +1,12 @@
 const fs = require('fs')
+const compressing = require('compressing')
 
-const content = fs.readFileSync('bundle.md', { encoding: 'utf-8' })
-const files = content.split('__SEPARATOR__')
-files.forEach(content => {
-  content = content.replace(/^\s*```\s|```\s*$/g, '')
-  const filepath = 'dist/bundle/' + content.match(/\/\/ (.*)\n/)[1]
-  content = content.replace(/.*\n/, '')
-  const dir = filepath.split('/').slice(0, -1).join('/')
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir)
-  }
-  fs.writeFileSync(filepath, content)
-})
+function unbundle(source, destination) {
+  destination = destination || process.cwd() + '/bundle'
+  const content = fs.readFileSync(source, { encoding: 'utf-8' })
+  fs.writeFileSync('dist/bundle.tgz', Buffer.from(content.trim().split(' ')))
+
+  compressing.tgz.uncompress('dist/bundle.tgz', destination)
+}
+
+module.exports = unbundle

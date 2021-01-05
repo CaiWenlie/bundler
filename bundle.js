@@ -1,22 +1,37 @@
 const glob = require('glob')
 const fs = require('fs')
+const compressing = require('compressing')
+const ignore = require('ignore')
+const pump = require('pump')
 
-glob('lib/**/**.**', (er, files) => {
-  const contents = []
-  files.forEach(file => {
-    const content = fs.readFileSync(file, { encoding: 'utf-8' })
-    contents.push({
-      filename: file.replace('lib/', ''),
-      content
-    })
+function bundle(source, destination) {
+  destination = destination || process.cwd() + '/bundle.txt'
+  console.log(1, source, destination)
+
+  const gitignoreContent = fs.existsSync(source + '/.gitignore') ? fs.readFileSync(source + '/.gitignore', 'utf-8') : ''
+  const ig = ignore().add(gitignoreContent)
+
+  const files = glob.sync(source + '/**/**.**', {
+    dot: true
   })
-  const result = contents.map(item => {
-    return `
-\`\`\`
-// ${item.filename}
-${item.content}
-\`\`\`
-`
-  }).join('__SEPARATOR__')
-  fs.writeFileSync('dist/bundle.md', result)
-})
+
+  const tgzStream = new compressing.tgz.Stream()
+  ig.filter(files)
+    .forEach(file => {
+      tgzStream.addEntry(file, {
+        relativePath: file.replace(source + '/', '')
+      })
+    })
+  const destStream = fs.createWriteStream('dist/bundle.tgz')
+  pump(tgzStream, destStream, encode)
+
+  function encode() {
+    const buffer = fs.readFileSync('dist/bundle.tgz')
+    const content = buffer.toJSON().data.join(' ')
+    fs.writeFileSync(destination, content)
+    console.log('done')
+  }
+
+}
+
+module.exports = bundle

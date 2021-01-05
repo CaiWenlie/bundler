@@ -1,23 +1,30 @@
-### file bundler
-bundle files into one, so you can paste it anywhere.
-useful when file transfering not allowed.
+### txtbundler
+- bundle files into a txt file.
+- or unbundle the bundled txt file.
+- recognizing `.gitignore`.
 
 ### Usage
 install
 ```
-npm install
+# npm install txtbundler -g 
 ```
 
-bundle `lib/*` into `dist/bundle.md`
+bundle `lib/` (default into `./bundle.txt`)
 ```
-node bundle
-```
-
-unbundle `bundle.md` into `dist/bundle`
-```
-node unbundle
+# txtbundler bundle lib
 ```
 
-### Todo
-- exclude none text files (image, media...)
-- cli command
+bundle `lib/` into `./dist/lib.txt`
+```
+# txtbundler bundle lib dist/lib.txt
+```
+
+unbundle `./bundle.txt` (default into `./bundle/`)
+```
+# txtbundler unbundle bundle.txt
+```
+
+unbundle `./bundle.txt` into `.dist/bundle/`
+```
+# txtbundler unbundle bundle.txt dist/bundle
+```
