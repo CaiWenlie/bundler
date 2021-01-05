@@ -1,6 +1,6 @@
 ### txtbundler
 - bundle files into a txt file.
-- or unbundle the bundled txt file.
+- or unbundle the txt file.
 - recognizing `.gitignore`.
 
 ### Usage
@@ -24,7 +24,7 @@ unbundle `./bundle.txt` (default into `./bundle/`)
 # txtbundler unbundle bundle.txt
 ```
 
-unbundle `./bundle.txt` into `.dist/bundle/`
+unbundle `./bundle.txt` into `./dist/bundle/`
 ```
 # txtbundler unbundle bundle.txt dist/bundle
 ```
