@@ -6,7 +6,6 @@ const pump = require('pump')
 
 function bundle(source, destination) {
   destination = destination || process.cwd() + '/bundle.txt'
-  console.log(1, source, destination)
 
   const gitignoreContent = fs.existsSync(source + '/.gitignore') ? fs.readFileSync(source + '/.gitignore', 'utf-8') : ''
   const ig = ignore().add(gitignoreContent)
@@ -22,13 +21,16 @@ function bundle(source, destination) {
         relativePath: file.replace(source + '/', '')
       })
     })
-  const destStream = fs.createWriteStream('dist/bundle.tgz')
+
+  const destStream = fs.createWriteStream('bundle.tgz')
   pump(tgzStream, destStream, encode)
 
   function encode() {
-    const buffer = fs.readFileSync('dist/bundle.tgz')
-    const content = buffer.toJSON().data.join(' ')
+    const buffer = fs.readFileSync('bundle.tgz')
+    const content = buffer.toJSON().data.map(item => String.fromCharCode(item + 32)).join('')
     fs.writeFileSync(destination, content)
+    fs.unlink('bundle.tgz', () => { })
+
     console.log('done')
   }
 

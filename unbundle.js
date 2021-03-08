@@ -1,12 +1,15 @@
 const fs = require('fs')
 const compressing = require('compressing')
 
-function unbundle(source, destination) {
+async function unbundle(source, destination) {
   destination = destination || process.cwd() + '/bundle'
   const content = fs.readFileSync(source, { encoding: 'utf-8' })
-  fs.writeFileSync('dist/bundle.tgz', Buffer.from(content.trim().split(' ')))
+  const decoded = content.split('').map(item => item.charCodeAt(0) - 32)
+  fs.writeFileSync('bundle.tgz', Buffer.from(decoded))
 
-  compressing.tgz.uncompress('dist/bundle.tgz', destination)
+  await compressing.tgz.uncompress('bundle.tgz', destination)
+  fs.unlink('bundle.tgz', () => { })
+  console.log('done')
 }
 
 module.exports = unbundle

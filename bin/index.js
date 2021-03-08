@@ -2,6 +2,7 @@
 
 const { program } = require('commander')
 const bundle = require('../bundle')
+const splice = require('../splice')
 const unbundle = require('../unbundle')
 
 program
@@ -20,6 +21,13 @@ program
   .description('unbundle a txt file')
   .action((source, destination) => {
     unbundle(source, destination)
+  })
+
+program
+  .command('splice <source> [limit]')
+  .description('splice a large file to size limited files')
+  .action((source, limit) => {
+    splice(source, limit)
   })
 
 program.parse(process.argv)
